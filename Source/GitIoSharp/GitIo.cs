@@ -20,9 +20,16 @@ namespace GitIoSharp
             if (_urlCache.ContainsKey(key))
                 return _urlCache[key];
 
-			var shortUri = _gitIoService.Execute(url);
-            _urlCache.Add(key, shortUri);
-            return shortUri;
+            try
+            {
+                var shortUri = _gitIoService.Execute(url);
+                _urlCache.Add(key, shortUri);
+                return shortUri;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 		public Uri Shorten(Uri url)
