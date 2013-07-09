@@ -6,11 +6,15 @@ namespace GitIoSharp
 {
 	public class GitIoService
 	{
+        private const int RequestTimeout = 30 * 1000; // 30 seconds
+
 		public Uri Execute(string url)
 		{
-			var request = WebRequest.Create("http://git.io");
+			var request = HttpWebRequest.Create("http://git.io") as HttpWebRequest;
+            request.UserAgent = "GitIoSharp";
 			request.ContentType = "application/x-www-form-urlencoded";
 			request.Method = "POST";
+            request.Timeout = RequestTimeout;
 			var bytes = Encoding.ASCII.GetBytes(url);
 			request.ContentLength = bytes.Length;
 			using (var os = request.GetRequestStream())
